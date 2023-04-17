@@ -55,11 +55,11 @@ stages:
       - job: test_build_and_push
         steps:
           - bash: |
-              run-tests.sh
+              sh run-tests.sh
             workingDirectory: ./scripts
             displayName: Run Tests
           - bash: |
-              build-and-deploy-docker-image.sh
+              sh build-and-deploy-docker-image.sh
             env:
               DOCKER_ID: $(DOCKER_ID)
               DOCKER_PASSWORD: $(DOCKER_PASSWORD)
