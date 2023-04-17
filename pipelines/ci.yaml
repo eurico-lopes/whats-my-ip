@@ -52,7 +52,7 @@ stages:
     dependsOn:
       - lint
     jobs:
-      - job: test, build and push
+      - job: test_build_and_push
         steps:
           - bash: |
               scripts/run-tests.sh
@@ -67,7 +67,7 @@ stages:
     dependsOn:
       - test_build_and_push
     jobs:
-      - job: terraform plan
+      - job: terraform_plan
         steps:
           - bash: |
               git clone https://github.com/tfutils/tfenv.git
