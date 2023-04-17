@@ -1,0 +1,7 @@
+<!doctype html>
+<title>Public IP Service</title>
+{% if public_ip %}
+  <p>Your public IP is {{ public_ip }}!</p>
+{% else %}
+  <p>Public IP Service is not available at the moment, please try again later!</p>
+{% endif %}
