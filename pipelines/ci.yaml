@@ -55,14 +55,16 @@ stages:
       - job: test_build_and_push
         steps:
           - bash: |
-              scripts/run-tests.sh
+              run-tests.sh
+            workingDirectory: ./scripts
             displayName: Run Tests
           - bash: |
-              scripts/build-and-deploy-docker-image.sh
+              build-and-deploy-docker-image.sh
             env:
               DOCKER_ID: $(DOCKER_ID)
               DOCKER_PASSWORD: $(DOCKER_PASSWORD)
             displayName: Build and deploy
+            workingDirectory: ./scripts
   - stage: plan
     dependsOn:
       - test_build_and_push
@@ -77,6 +79,7 @@ stages:
               terraform init
               terraform plan
             displayName: Terraform plan
+            workingDirectory: ./terraform
               
   
         
