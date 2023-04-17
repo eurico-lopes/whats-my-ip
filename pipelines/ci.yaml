@@ -1,0 +1,82 @@
+# Specification for normal Continuous Integration Triggers
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - pipelines
+      - requirements
+      - src
+      - terraform
+      - k8s
+      - Dockerfile
+# specification for Pull Request triggers
+pr:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - pipelines
+      - requirements
+      - src
+      - terraform
+      - k8s
+      - Dockerfile
+
+pool: ubuntu-latest
+
+variables:
+# it is expected to have DOCKER_ID and DOCKER_PASSWORD defined in this Azure Pipelines variable group
+  - group: docker_credentials
+
+stages:
+  - stage: lint
+    jobs:
+      - job: terraform
+        steps:
+          - bash: |
+              git clone https://github.com/tfutils/tfenv.git
+              echo "##vso[task.prependpath]~/.tfenv/bin"
+            displayName: Install tfenv
+          - bash: |
+              terraform init
+            displayName: terraform init
+            workingDirectory: ./terraform
+          - bash: |
+              terraform fmt -recursive -check -diff
+            displayName: terraform lint
+            workingDirectory: ./terraform
+  - stage: test_build_and_push
+    dependsOn:
+      - lint
+    jobs:
+      - job: test, build and push
+        steps:
+          - bash: |
+              scripts/run-tests.sh
+            displayName: Run Tests
+          - bash: |
+              scripts/build-and-deploy-docker-image.sh
+            env:
+              DOCKER_ID: $(DOCKER_ID)
+              DOCKER_PASSWORD: $(DOCKER_PASSWORD)
+            displayName: Build and deploy
+  - stage: plan
+    dependsOn:
+      - test_build_and_push
+      jobs:
+        - job: terraform plan
+          steps:
+            - bash: |
+                git clone https://github.com/tfutils/tfenv.git
+                echo "##vso[task.prependpath]~/.tfenv/bin"
+              displayName: Install tfenv
+            - bash: |
+                terraform init
+                terraform plan
+              displayName: Terraform plan
+              
+  
+        
