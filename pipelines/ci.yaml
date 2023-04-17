@@ -66,17 +66,17 @@ stages:
   - stage: plan
     dependsOn:
       - test_build_and_push
-      jobs:
-        - job: terraform plan
-          steps:
-            - bash: |
-                git clone https://github.com/tfutils/tfenv.git
-                echo "##vso[task.prependpath]~/.tfenv/bin"
-              displayName: Install tfenv
-            - bash: |
-                terraform init
-                terraform plan
-              displayName: Terraform plan
+    jobs:
+      - job: terraform plan
+        steps:
+          - bash: |
+              git clone https://github.com/tfutils/tfenv.git
+              echo "##vso[task.prependpath]~/.tfenv/bin"
+            displayName: Install tfenv
+          - bash: |
+              terraform init
+              terraform plan
+            displayName: Terraform plan
               
   
         
