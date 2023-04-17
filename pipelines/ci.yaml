@@ -30,6 +30,7 @@ pool: MyComputer
 variables:
 # it is expected to have DOCKER_ID and DOCKER_PASSWORD defined in this Azure Pipelines variable group
   - group: docker_credentials
+  - group: aws_credentials
 
 stages:
   - stage: lint
@@ -44,6 +45,9 @@ stages:
               terraform init
             displayName: terraform init
             workingDirectory: ./terraform
+            env:
+              AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+              AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
           - bash: |
               terraform fmt -recursive -check -diff
             displayName: terraform lint
@@ -80,6 +84,9 @@ stages:
               terraform plan
             displayName: Terraform plan
             workingDirectory: ./terraform
+            env:
+              AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+              AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
               
   
         
