@@ -25,8 +25,7 @@ pr:
       - k8s
       - Dockerfile
 
-pool:
-  vmImage: ubuntu-latest
+pool: MyComputer
 
 variables:
 # it is expected to have DOCKER_ID and DOCKER_PASSWORD defined in this Azure Pipelines variable group
