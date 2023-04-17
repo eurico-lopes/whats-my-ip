@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${name}-nodeport
+  namespace: ${namespace}
+spec:
+  type: NodePort
+  ports:
+  - name: ${name}-nodeport
+    nodePort: ${node_port}
+    port: ${port}
+    protocol: TCP
+    targetPort: ${target_port}
+  selector:
+    component: ${name}

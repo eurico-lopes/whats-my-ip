@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${name}
+  namespace: ${namespace}
+spec:
+  replicas: ${replicas}
+  selector:
+    matchLabels:
+      component: ${name}
+  template:
+    metadata:
+      labels:
+        component: ${name}
+    spec:
+      imagePullPolicy: always
+      containers:
+        - image: "${image}"
+          name: ${name}
+          resources:
+            requests:
+              cpu: ${resource_requests_cpu}
+              memory: ${resource_requests_memory_mb}Mi
+            limits:
+              cpu: ${resource_limits_cpu}
+              memory: ${resource_limits_memory_mb}Mi
+          ports:
+          - containerPort: ${container_port}
