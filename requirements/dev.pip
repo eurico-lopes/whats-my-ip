@@ -1,2 +1,2 @@
 -r test.pip
-flake8
+flake8==6.0.0
