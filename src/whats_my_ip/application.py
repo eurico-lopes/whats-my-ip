@@ -8,6 +8,3 @@ app = Flask(__name__)
 def get():
     client_ip = get_client_ip(request.environ)
     return render_template("index.html", public_ip=client_ip)
-
-def pass_function():
-    pass
