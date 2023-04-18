@@ -9,7 +9,7 @@ locals {
   node_port                   = 32099
   port                        = 8000
   target_port                 = 8000
-  image                       = "euricomanel/whats_my_ip:${data.shell_script.tag.output["value"]}"
+  image                       = "${var.docker_id}/whats_my_ip:${data.shell_script.tag.output["value"]}"
 }
 
 data "shell_script" "tag" {

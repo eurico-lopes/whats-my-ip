@@ -26,10 +26,6 @@ stages:
       - job: terraform
         steps:
           - bash: |
-              git clone https://github.com/tfutils/tfenv.git
-              echo "##vso[task.prependpath]~/.tfenv/bin"
-            displayName: Install tfenv
-          - bash: |
               terraform init
             displayName: terraform init
             workingDirectory: ./terraform
@@ -64,15 +60,12 @@ stages:
       - job: terraform_apply
         steps:
           - bash: |
-              git clone https://github.com/tfutils/tfenv.git
-              echo "##vso[task.prependpath]~/.tfenv/bin"
-            displayName: Install tfenv
-          - bash: |
               terraform init
-              terraform apply --auto-approve
+              terraform apply --auto-approve -var docker_id=${docker_id}
             displayName: Terraform apply
             workingDirectory: ./terraform
             env:
+              DOCKER_ID: $(DOCKER_ID)
               AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
               AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
               
