@@ -7,7 +7,7 @@ COPY ./requirements ./requirements
 
 FROM base as test
 RUN pip install -r /app/requirements/test.pip
-CMD ["python", "-m", "pytest"]
+CMD ["python", "-m", "pytest", "--cov-fail-under=100", "--cov=whats_my_ip"]
 
 FROM base as production
 RUN pip install -r /app/requirements/prod.pip
