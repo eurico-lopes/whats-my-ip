@@ -199,4 +199,4 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-volume
+local/volume
