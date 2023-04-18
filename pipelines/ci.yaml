@@ -11,20 +11,8 @@ trigger:
       - terraform
       - k8s
       - Dockerfile
-# specification for Pull Request triggers
-pr:
-  branches:
-    include:
-      - master
-  paths:
-    include:
-      - pipelines
-      - requirements
-      - src
-      - terraform
-      - k8s
-      - Dockerfile
 
+# this is a self-hosted agent running in my machine
 pool: MyComputer
 
 variables:
@@ -69,11 +57,11 @@ stages:
               DOCKER_PASSWORD: $(DOCKER_PASSWORD)
             displayName: Build and deploy
             workingDirectory: ./scripts
-  - stage: plan
+  - stage: deploy
     dependsOn:
       - test_build_and_push
     jobs:
-      - job: terraform_plan
+      - job: terraform_apply
         steps:
           - bash: |
               git clone https://github.com/tfutils/tfenv.git
@@ -81,8 +69,8 @@ stages:
             displayName: Install tfenv
           - bash: |
               terraform init
-              terraform plan
-            displayName: Terraform plan
+              terraform apply --auto-approve
+            displayName: Terraform apply
             workingDirectory: ./terraform
             env:
               AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
